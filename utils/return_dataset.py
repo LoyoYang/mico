@@ -18,7 +18,7 @@ class ResizeImage():
 
 def return_dataset(args, return_idx=False):
     base_path = './data/txt/%s' % args.dataset
-    root = args.root
+    root = args.root  # ici c'est ./ 
     image_set_file_s = \
         os.path.join(base_path,
                      'labeled_source_images_' +
@@ -62,22 +62,22 @@ def return_dataset(args, return_idx=False):
             transforms.Normalize([0.485, 0.456, 0.406], [0.229, 0.224, 0.225])
         ])}
 
-    source_dataset = Imagelists_VISDA(image_set_file_s, root=os.path.join(root, args.source),
+    source_dataset = Imagelists_VISDA(image_set_file_s, root=os.path.join(args.root, 'data'),
                                       transform=data_transforms['train'])
-    target_dataset = Imagelists_VISDA(image_set_file_t, root=os.path.join(root,args.target),
+    target_dataset = Imagelists_VISDA(image_set_file_t, root=os.path.join(args.root, 'data'),
                                       transform=data_transforms['train'], test=True)
-    target_dataset_val = Imagelists_VISDA(image_set_file_t_val, root=os.path.join(root,args.target),
+    target_dataset_val = Imagelists_VISDA(image_set_file_t_val, root=os.path.join(args.root, 'data'),
                                           transform=data_transforms['val'])
 
-    target_dataset_unl = Imagelists_VISDA(image_set_file_unl, root=os.path.join(root,args.target),
+    target_dataset_unl = Imagelists_VISDA(image_set_file_unl, root=os.path.join(args.root, 'data'),
                                               transform=data_transforms['val'], test=True)
 
     if return_idx:
-        target_dataset_test = Imagelists_VISDA(image_set_file_unl, root=os.path.join(root,args.target),
+        target_dataset_test = Imagelists_VISDA(image_set_file_unl, root=os.path.join(args.root, 'data'),
                                                transform=data_transforms['test'], test=True)
         shuffle_flag = False
     else:
-        target_dataset_test = Imagelists_VISDA(image_set_file_unl, root=os.path.join(root, args.target),
+        target_dataset_test = Imagelists_VISDA(image_set_file_unl, root=os.path.join(args.root, 'data'),
                                                transform=data_transforms['test'])
         shuffle_flag = True
 
