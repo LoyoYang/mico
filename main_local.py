@@ -51,6 +51,7 @@ parser.add_argument('--runs', type=int, default=999)
 parser.add_argument('--eval', action='store_true', default=False)
 
 args = parser.parse_args()
+ratio = 10 # !!! Modif perso ! on prendra 1/10eme des données du jeu complet, implique aussi des modifs dans return_dataset.py et dans data_list.py
 
 """DomainNet-subset 7 adaptation scenarios"""
 multi = [['real', 'clipart']]
@@ -62,7 +63,7 @@ print('Dataset %s Source %s Target %s Labeled num perclass %s Network %s' %
       (args.dataset, args.source, args.target, args.num, args.net))
 
 source_loader, target_loader, target_loader_unl, target_loader_val, \
-    target_loader_test, class_list = return_dataset(args=args, return_idx=False)
+    target_loader_test, class_list = return_dataset(args=args, ratio=ratio, return_idx=False)
 
 
 """ net: w_f; twin: w_g """
