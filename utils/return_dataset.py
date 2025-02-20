@@ -16,9 +16,9 @@ class ResizeImage():
         return img.resize((th, tw))
 
 
-def return_dataset(args, return_idx=False):
+def return_dataset(args, ratio, return_idx=False):
     base_path = './data/txt/%s' % args.dataset
-    root = args.root
+    root = args.root  # ici c'est ./ 
     image_set_file_s = \
         os.path.join(base_path,
                      'labeled_source_images_' +
@@ -62,23 +62,23 @@ def return_dataset(args, return_idx=False):
             transforms.Normalize([0.485, 0.456, 0.406], [0.229, 0.224, 0.225])
         ])}
 
-    source_dataset = Imagelists_VISDA(image_set_file_s, root=os.path.join(root, args.source),
-                                      transform=data_transforms['train'])
-    target_dataset = Imagelists_VISDA(image_set_file_t, root=os.path.join(root,args.target),
-                                      transform=data_transforms['train'], test=True)
-    target_dataset_val = Imagelists_VISDA(image_set_file_t_val, root=os.path.join(root,args.target),
-                                          transform=data_transforms['val'])
+    source_dataset = Imagelists_VISDA(image_set_file_s, root=os.path.join(args.root, 'data'),
+                                      transform=data_transforms['train'], ratio=ratio)
+    target_dataset = Imagelists_VISDA(image_set_file_t, root=os.path.join(args.root, 'data'),
+                                      transform=data_transforms['train'], test=True, ratio=ratio)
+    target_dataset_val = Imagelists_VISDA(image_set_file_t_val, root=os.path.join(args.root, 'data'),
+                                          transform=data_transforms['val'], ratio=ratio)
 
-    target_dataset_unl = Imagelists_VISDA(image_set_file_unl, root=os.path.join(root,args.target),
-                                              transform=data_transforms['val'], test=True)
+    target_dataset_unl = Imagelists_VISDA(image_set_file_unl, root=os.path.join(args.root, 'data'),
+                                              transform=data_transforms['val'], test=True, ratio=ratio)
 
     if return_idx:
-        target_dataset_test = Imagelists_VISDA(image_set_file_unl, root=os.path.join(root,args.target),
-                                               transform=data_transforms['test'], test=True)
+        target_dataset_test = Imagelists_VISDA(image_set_file_unl, root=os.path.join(args.root, 'data'), #vérifier qu'on met bien le ratio ici aussi parce que je pige pas bien cette condition if
+                                               transform=data_transforms['test'], test=True, ratio=ratio)
         shuffle_flag = False
     else:
-        target_dataset_test = Imagelists_VISDA(image_set_file_unl, root=os.path.join(root, args.target),
-                                               transform=data_transforms['test'])
+        target_dataset_test = Imagelists_VISDA(image_set_file_unl, root=os.path.join(args.root, 'data'),
+                                               transform=data_transforms['test'], ratio=ratio)
         shuffle_flag = True
 
     class_list = return_classlist(image_set_file_s)

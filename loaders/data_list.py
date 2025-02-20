@@ -4,7 +4,7 @@ import os.path
 from PIL import Image
 
 
-def pil_loader(path):
+def pil_loader(path): #fonction, 
     with open(path, 'rb') as f:
         img = Image.open(f)
         return img.convert('RGB')
@@ -38,10 +38,11 @@ def return_classlist(image_list):
 
 class Imagelists_VISDA(object):
     def __init__(self, image_list, root="./data/multi/",
-                 transform=None, target_transform=None, test=False):
+                 transform=None, target_transform=None, test=False, ratio=None): #ajout de ratio: modifie la liste et prend 1/ratio elements dans image_list
+        self.ratio = ratio
         imgs, labels = make_dataset_fromlist(image_list)
-        self.imgs = imgs
-        self.labels = labels
+        self.imgs = imgs[0:len(imgs):ratio] # !!! modif ici ! ajout de [0:len(imgs):ratio]
+        self.labels = labels[0:len(labels):ratio] # modif ici ! ajout de [0:len(imgs):ratio]
         self.transform = transform
         self.target_transform = target_transform
         self.loader = pil_loader
